@@ -10,26 +10,38 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        List<String> logEntries = readLogFile("target/app.log");
+        // when using "sc.textFile(...)" on Windows you might need to set the hadoop home dir and have winutils.exe available in <HADOOP_HOME>\bin
+        // or uncomment and replace with your path to hadoop home dir if needed - e.g. on Windows:
+        /*
+        System.setProperty("hadoop.home.dir", "C:\\<Yout-Path-To-Hadoop-WinUtils>"); // OR HADOOP_HOME
+        */
+        // and put <HADOOP_HOME>\bin\winutils.exe into your PATH additionally to avoid a WARN log messages like
+        // "... FileNotFoundException.... winutils.exe ... "  or "NativeCodeLoader - Unable to load native-hadoop library ...."
 
-        //Logger.getLogger("org.apache").setLevel(Level.WARN);
-        //Logger.getLogger("org.apache").setLevel(Level.WARN);
-        //Logger.getRootLogger().setLevel(Level.WARN);
-
+        String INPUT_FILENAME = "src/main/java/dst/testing/spark/Main.java";
+        // more data - after a while of testing - uncomment this:
+        //INPUT_FILENAME = "src/main/java/resources/log4j2.properties";
 
         SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("Spark application");
         try (JavaSparkContext sc = new JavaSparkContext(sparkConf)) {
-            JavaRDD<String> logLines = sc.parallelize(logEntries);
+            // read file - COULD do it like this - but file is read into memory first:
+            /*
+             List<String> logEntries = readLinesOfFile("src/main/java/dst/testing/spark/Main.java");
+             JavaRDD<String> logLines = sc.parallelize(logEntries);
+             */
 
+
+            // BETTER do it like this - file is read in parallel by Spark:
+            sc.textFile(INPUT_FILENAME);
+            JavaRDD<String> inputFileLines = sc.textFile(INPUT_FILENAME);
 
 
             // inter immediate count
-            Long count = logLines.map(line -> 1L).reduce(Long::sum);
-            System.out.println("count: " + count);
+            Long count = inputFileLines.map(line -> 1L).reduce(Long::sum);
+            System.out.println("lines count: " + count);
 
-
-
-            // Group by key :=  Chrashy / performance problem!!! Avoid it!
+            // groupByKey
+            // Group by key :=  crashy and/or performance problem!!! avoid it!
             /*
                     JavaPairRDD<String, String> logTuples = logLines.mapToPair(line -> new Tuple2<>(line.substring(20, 25), line));
                     JavaPairRDD<String, Iterable<String>> groupedByKeyRDD = logTuples.groupByKey();
@@ -41,9 +53,10 @@ public class Main {
                     countLogTypes.foreach(t -> System.out.println(t._1() + " = " + t._2()));
              */
 
-            // logTuples.foreach(System.out::println); -> Serialization error when running on multiple CPUS in a cluster
-            // Lösung:  collect all together in on CPU -> List<String> -> forEach statt foreach
-            //logTuples.map(t -> t._1).collect().forEach(System.out::println);
+            // HINT:
+            // logTuples.foreach(System.out::println); -> Serialization error might occur when running on multiple CPUs in a cluster
+            // Solution:  "collect()" all together to one CPU and get a Java-List<String> instead -> forEach (Java) vs. foreach (Spark)
+            // e.g.: logTuples.map(t -> t._1).collect().forEach(System.out::println);
 
             // Better way: reduceByKey
             /*
@@ -51,12 +64,20 @@ public class Main {
                     .reduceByKey(Long::sum)
                     .foreach(t -> System.out.println(t._1() + " = " + t._2()));
             */
+
+            // FlatMap
+            /*
+            logLines.flatMap(line -> List.of(line.split(" ")).iterator())
+                    .mapToPair(word -> new scala.Tuple2<>(word, 1L))
+                    .reduceByKey(Long::sum)
+                    .foreach(t -> System.out.println(t._1() + " = " + t._2()));
+             */
         }
 
 
     }
 
-    private static List<String> readLogFile(String fileName) {
+    private static List<String> readLinesOfFile(String fileName) {
         List<String> lines = new ArrayList<>();
         try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(fileName))) {
             String line;
