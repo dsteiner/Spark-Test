@@ -1,13 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dst.testing.spark.Main" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="FindImportantWordExample" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="ALTERNATIVE_JRE_PATH" value="zulu-11" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="MAIN_CLASS_NAME" value="dst.testing.spark.Main" />
+    <option name="MAIN_CLASS_NAME" value="dst.testing.spark.FindImportantWordExample" />
     <module name="learningSpark" />
     <option name="VM_PARAMETERS" value="--add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.util.concurrent=ALL-UNNAMED" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.virtualpairprogrammers.*" />
+        <option name="PATTERN" value="dst.testing.spark.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

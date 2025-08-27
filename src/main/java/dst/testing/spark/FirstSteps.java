@@ -8,7 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class FirstSteps {
     public static void main(String[] args) {
         // when using "sc.textFile(...)" on Windows you might need to set the hadoop home dir and have winutils.exe available in <HADOOP_HOME>\bin
         // or uncomment and replace with your path to hadoop home dir if needed - e.g. on Windows:
@@ -18,11 +18,11 @@ public class Main {
         // and put <HADOOP_HOME>\bin\winutils.exe into your PATH additionally to avoid a WARN log messages like
         // "... FileNotFoundException.... winutils.exe ... "  or "NativeCodeLoader - Unable to load native-hadoop library ...."
 
-        String INPUT_FILENAME = "src/main/java/dst/testing/spark/Main.java";
+        String INPUT_FILENAME = "src/main/java/dst/testing/spark/FirstSteps.java";
         // more data - after a while of testing - uncomment this:
         //INPUT_FILENAME = "src/main/java/resources/log4j2.properties";
 
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("Spark application");
+        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("First Steps Spark Testing App");
         try (JavaSparkContext sc = new JavaSparkContext(sparkConf)) {
             // read file - COULD do it like this - but file is read into memory first:
             /*
@@ -32,7 +32,6 @@ public class Main {
 
 
             // BETTER do it like this - file is read in parallel by Spark:
-            sc.textFile(INPUT_FILENAME);
             JavaRDD<String> inputFileLines = sc.textFile(INPUT_FILENAME);
 
 
