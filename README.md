@@ -5,6 +5,22 @@ This project is to initially setup Apache Spark (version 3.5.6) programming with
 
 It includes the necessary dependencies and logging configuration to get started with Spark development in Java and Maven
 
+## Prerequisites
+* Java 11 (NOT above - must use Spark 4.x.y. for this)
+  * add VM-Options: 
+
+        --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+        --add-opens java.base/java.nio=ALL-UNNAMED 
+        --add-opens java.base/java.net=ALL-UNNAMED 
+        --add-opens java.base/java.lang=ALL-UNNAMED 
+        --add-opens java.base/java.util=ALL-UNNAMED 
+        --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+        --add-exports java.base/sun.security.action=ALL-UNNAMED
+        --add-opens java.base/java.io=ALL-UNNAMED
+        
+
+## Example Code
+
 1. FirstStep.java
 
 * Read https://spark.apache.org/docs/3.5.6/rdd-programming-guide.html
@@ -13,3 +29,5 @@ It includes the necessary dependencies and logging configuration to get started 
 
 2. FindImportantWordExample.java
    
+3. Joins.java
+
