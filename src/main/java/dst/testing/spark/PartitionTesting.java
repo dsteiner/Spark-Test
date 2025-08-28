@@ -18,7 +18,7 @@ public class PartitionTesting {
 
         String INPUT_FILENAME = "target/app.log"; // more data - after a while of testing
 
-        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("Find Important Word Example App");
+        SparkConf sparkConf = new SparkConf().setMaster("local[*]").setAppName("PartitionTesting App");
         try (JavaSparkContext sc = new JavaSparkContext(sparkConf)) {
 
             // BETTER do it like this - file is read in parallel by Spark:
@@ -26,8 +26,9 @@ public class PartitionTesting {
 
             System.out.println("Initial partition size: " + inputFileLines.getNumPartitions());
 
-            JavaPairRDD<String, String> logTypeMessageRDD = inputFileLines.mapToPair(i ->
-                    new Tuple2<>(i.substring(20, 25), i.substring(26)));
+            JavaPairRDD<String, String> logTypeMessageRDD = inputFileLines
+                    .filter(i -> i != null && i.length() > 25)
+                    .mapToPair(i -> new Tuple2<>(i.substring(20, 25), i.substring(26)));
 
             System.out.println("Partition size after getTake(): " + inputFileLines.getNumPartitions());
 
@@ -40,7 +41,16 @@ public class PartitionTesting {
                 return new Tuple2<>(t._1, i.longValue());
             });
 
-            countLogTypes.foreach(i-> System.out.println(" " + i._1 + " = " + i._2)) ;
+            // switch to PairRDD to use sortByKey
+            countLogTypes.mapToPair(t -> new Tuple2<>(t._2, t._1))
+                    .sortByKey(false) // descending
+                    .mapToPair(t -> new Tuple2<>(t._2, t._1));
+
+            countLogTypes.take(10).forEach(i-> System.out.println(" " + i._1 + " = " + i._2));
+
+            // Action
+            System.out.println( "count=" +  countLogTypes.count() );
+
 
             // Remove (comment) after testing:
             System.out.println("\n===== DEBUG ONLY ! ======\n\tOpen Spark-Jobs page at http://localhost:4040 to analyze execution performande - Press Enter when finished\n=========================\n");
