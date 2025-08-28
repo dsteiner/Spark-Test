@@ -64,9 +64,9 @@ public class FindImportantWordExample {
             // TAKE CARE!
             // "send" "foreach" lambda to ALL Workers to each partition  (in PARALLEL -> THREAD)
             // -> sorted output is correct for each partition, so the output you see might be "mixed"!
-                    /*
-                    sorted.foreach(System.out::println);
-                     */
+/*
+            sorted.foreach(s -> System.out.println(s)); // System.out::println is not serializable
+*/
         }
 
     }

@@ -44,7 +44,7 @@ public class FirstSteps {
             /*
                     JavaPairRDD<String, String> logTuples = logLines.mapToPair(line -> new Tuple2<>(line.substring(20, 25), line));
                     JavaPairRDD<String, Iterable<String>> groupedByKeyRDD = logTuples.groupByKey();
-                    JavaRDD<Tuple2<String, Long>> countLogTypes = groupedByKeyRDD.map((t) -> { // Better use GUAVA: Iterables.size(...)
+                    JavaRDD<Tuple2<String, Long>> countLogTypes = groupedByKeyRDD.map((t) -> { // as an alternative use GUAVA Iterables.size(...)
                         AtomicLong i = new AtomicLong();
                         t._2().forEach(v -> i.incrementAndGet());
                         return new Tuple2<>(t._1, i.longValue());

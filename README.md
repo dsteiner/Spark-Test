@@ -33,3 +33,34 @@ It includes the necessary dependencies and logging configuration to get started 
 3. Joins.java
 
 4. BigDataExcercise.java
+
+## Performance Tuning
+
+### Open Spark Jobs Web UI
+
+Add following just before closing our Spark Session:
+
+```java
+
+    System.out.println("\n===== DEBUG ONLY ! ======\n\tOpen Spark-Jobs page at http://localhost:4040 to analyze execution performande - Press Enter when finished\n=========================\n");
+    new Scanner(System.in).nextLine();
+
+    // Alternatively, you can put an Breakpoint before the __SparkContext__is "close()"ed and DEBUG your App ....
+```
+
+### Wide Transformations
+
+When using wide transformations (like `reduceByKey`, `groupByKey`, `sortByKey`, `join` etc.), Spark will perform a shuffle operation. This involves redistributing data across the cluster, which can be expensive in terms of time and resources.
+
+To optimize wide transformations, consider the following strategies:
+
+1. **Reduce Data Before Shuffle**: Use `map` or `filter` transformations before wide transformations to reduce the amount of data that needs to be shuffled.
+2. **Use `reduceByKey` Instead of `groupByKey`**: When aggregating data, prefer `reduceByKey` as it combines values locally before shuffling, reducing the amount of data transferred across the network.
+
+### Salt the Key
+groupByKey() kann zu OutOfMemory führen, wenn ein Key sehr viele Values auf eine Partition verteilt und andere Partitions "leer" sind...
+...muss vermident werdne - letzte Möglichkeit ist "Salt the Key" vorher - wenn alles andere nicht hilft  
+
+When dealing with skewed data, salting the key can help distribute the data more evenly across partitions. This involves adding a random prefix or suffix to the keys before performing wide transformations.
+
+### Caching and Persistence
