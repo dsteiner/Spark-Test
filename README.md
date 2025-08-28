@@ -21,13 +21,15 @@ It includes the necessary dependencies and logging configuration to get started 
 
 ## Example Code
 
-1. FirstStep.java
-
 * Read https://spark.apache.org/docs/3.5.6/rdd-programming-guide.html
-* Start programming with [FirstSteps.java](src/main/java/FirstSteps.java) and read/test comments 
+* Start programming with [FirstSteps.java](src/main/java/FirstSteps.java) and read/test comments
 * Work your way through  https://spark.apache.org/docs/3.5.6/rdd-programming-guide.html
+* Hands Om - Step by Step:
+
+1. FirstStep.java
 
 2. FindImportantWordExample.java
    
 3. Joins.java
 
+4. BigDataExcercise.java
