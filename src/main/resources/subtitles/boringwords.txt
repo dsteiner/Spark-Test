@@ -15,7 +15,7 @@ interestingly
 secondly
 guessing
 reuse
-frankly
+franklyf
 terribly
 primitive
 luckily
@@ -290,7 +290,6 @@ video
 well
 d
 where
-info
 rights
 public
 books
@@ -1025,7 +1024,6 @@ archives
 points
 knowledge
 magazine
-error
 camera
 jun
 girl
@@ -6427,7 +6425,6 @@ prescribed
 catherine
 timely
 talked
-debug
 delayed
 chuck
 reproduced
