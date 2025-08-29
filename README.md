@@ -26,13 +26,18 @@ It includes the necessary dependencies and logging configuration to get started 
 * Work your way through  https://spark.apache.org/docs/3.5.6/rdd-programming-guide.html
 * Hands Om - Step by Step:
 
-1. FirstStep.java
+### JavaSparkRDD 
+1. [FirstStep.java](src/main/java/dst/testing/spark/FirstSteps.java)
 
-2. FindImportantWordExample.java
+2. [FindImportantWordExample.java](src/main/java/dst/testing/spark/FindImportantWordExample.java)
    
-3. Joins.java
+3. [Joins.java](src/main/java/dst/testing/spark/Joins.java)
 
-4. BigDataExcercise.java
+4. [BigDataExcercise.java](src/main/java/dst/testing/spark/BigDataExcercise.java)
+
+### SparkSQL
+
+[SparkSQLFirstSteps.java](src/main/java/dst/testing/spark/SparkSQLFirstSteps.java)
 
 ## Performance Tuning
 
