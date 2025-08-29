@@ -37,7 +37,8 @@ It includes the necessary dependencies and logging configuration to get started 
 
 ### SparkSQL
 
-[SparkSQLFirstSteps.java](src/main/java/dst/testing/spark/SparkSQLFirstSteps.java)
+1. [SparkSQLFirstSteps.java](src/main/java/dst/testing/spark/SparkSQLFirstSteps.java)
+2. [SparkSQLQueriesOnMockData](src/main/java/dst/testing/spark/SparkSQLQueriesOnMockData.java)
 
 ## Performance Tuning
 
